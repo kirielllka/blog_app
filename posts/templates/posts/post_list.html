@@ -1,0 +1,9 @@
+<h1>All posts</h1>
+{% for post in object_list %}
+<ul>
+    <li>Title:{{post.title}}</li>
+    <li>Content:{{post.content}}</li>
+    <li>Autor:{{post.autor}}</li>
+    <li>Created at:{{post.created_at}}</li>
+</ul>
+{% endfor %}
