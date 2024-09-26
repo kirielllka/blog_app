@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -19,6 +21,7 @@ class Profile(models.Model):
     user_patronymic = models.fields.CharField(max_length=150, verbose_name='Patronymic', blank=True, null=True)
     user_birth_date = models.fields.DateField(blank=True, null=True)
 
+
     def full_name(self):
         full = []
         user_full_name = self.user.first_name + ' ' + self.user.last_name
@@ -29,6 +32,15 @@ class Profile(models.Model):
         if self.user_patronymic:
             full.append(self.user_patronymic)
         return ' '.join(full)
+
+    def User_age(self, obj):
+        today = date.today()
+        age = today.year - obj.user_birth_date.year
+        if today.month < obj.user_birth_date.month or (
+                today.month == obj.user_birth_date.month and today.day < obj.user_birth_date.day):
+            age -= 1
+        return age
+
 
 
     def __str__(self):
@@ -53,5 +65,7 @@ class Likes(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='user', related_name='likes_user')
 
     def __str__(self):
-        return f'Пост:{self.post},Пользователь:{self.user},Коммент:{self.comment}'
+        if self.post:
+            return f'Пост:{self.post},Пользователь:{self.user}'
+        return f'Пользователь:{self.user},Коммент:{self.comment}'
 

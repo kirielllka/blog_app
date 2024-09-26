@@ -53,6 +53,18 @@ class PostViewSet(BasePermissionViewSet):
             serializer = LikesSerializer(instance=like)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @action(detail=True, url_path='unlike', methods=['DELETE'])
+    def unlike_post(self, request, pk=None):
+        post = self.get_object()
+        try:
+            like = Likes.objects.get(post=post, user=request.user)
+            like.delete()
+            return Response(data={'msg':'like was delete'})
+
+        except Likes.DoesNotExist:
+            return Response(data={'msg': 'This post doesnt like by this user'})
+
+
 
 
 
@@ -76,6 +88,16 @@ class CommentViewSet(BasePermissionViewSet):
             like = Likes.objects.get_or_create(post=comment, user=request.user)
             serializer = LikesSerializer(instance=like)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, url_path='unlike', methods=['DELETE'])
+    def unlike_comment(self, request, pk=None):
+        post = self.get_object()
+        try:
+            like = Likes.objects.get(post=post, user=request.user)
+            like.delete()
+            return Response(data={'msg':'like was delete'})
+        except Likes.DoesNotExist:
+            return Response(data={'msg': 'This comment doesnt like by this user'})
 
 
 

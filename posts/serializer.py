@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Post, Profile, Comments, Likes
@@ -35,15 +37,21 @@ class PostSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())#скрывает поле
     full_name = Profile.full_name
+    age = serializers.SerializerMethodField()
     # user_info = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ('id','user','full_name','user_patronymic', 'user_birth_date')
+        fields = ('id','user','full_name','user_patronymic','age', 'user_birth_date')
 
-    # def get_user_info(self,object):#метод для раскрытия юзера чтобы вместо айди был обьект
-    #     serializer = UserSerializer(object.user)
-    #     return serializer.data
+    def get_age(self, obj):
+        if obj.user_birth_date:  # Check if birthdate is available
+            today = date.today()
+            age = today.year - obj.user_birth_date.year
+            if today.month < obj.user_birth_date.month or (
+                    today.month == obj.user_birth_date.month and today.day < obj.user_birth_date.day):
+                age -= 1
+            return age
 
 
 
