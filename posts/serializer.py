@@ -42,7 +42,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('id','user','full_name','user_patronymic','age', 'user_birth_date')
+        fields = ('id','user','image','full_name','user_patronymic','age', 'user_birth_date')
 
     def get_age(self, obj):
         if obj.user_birth_date:  # Check if birthdate is available

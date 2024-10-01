@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'djoser',
     'rest_framework.authtoken',
-
+    'django_filters',
     #local
     'posts.apps.PostsConfig',
 ]
@@ -148,5 +148,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
 
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 
 }

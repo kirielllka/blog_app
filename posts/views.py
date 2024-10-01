@@ -1,4 +1,7 @@
+import django_filters
 from django.views.generic import ListView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import generics
 from .serializer import PostSerializer, ProfileSerializer, CommentSerializer, LikesSerializer
 from .models import Post, Profile, Comments, Likes
@@ -39,6 +42,11 @@ class BasePermissionViewSet(ModelViewSet):
 class PostViewSet(BasePermissionViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
+    filterset_fields = ['autor',]
+    search_fields = ['title', 'content','autor__username']
+    ordering_fields = ['updated_at', 'autor', 'likes_post']
+    ordering = ['updated_at']
 
 
 
@@ -77,6 +85,9 @@ class CommentViewSet(BasePermissionViewSet):
     queryset = Comments.objects.all()
     serializer_class = CommentSerializer
     pagination_class = CommentApiPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    ordering_fields = ['date_of_edit', 'likes_comment']
+    ordering = ['date_of_edit']
 
     @action(detail=True, url_path='like', methods=['POST'])
     def like_comment(self, request, pk=None):

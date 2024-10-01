@@ -20,6 +20,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='User', related_name='profiles')
     user_patronymic = models.fields.CharField(max_length=150, verbose_name='Patronymic', blank=True, null=True)
     user_birth_date = models.fields.DateField(blank=True, null=True)
+    image = models.ImageField(upload_to='posts/images', blank=True, null=True,verbose_name='Image')
 
 
     def full_name(self):
