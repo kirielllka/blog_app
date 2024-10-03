@@ -1,10 +1,9 @@
-import django_filters
 from django.views.generic import ListView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import generics
-from .serializer import PostSerializer, ProfileSerializer, CommentSerializer, LikesSerializer
-from .models import Post, Profile, Comments, Likes
+from .serializer import PostSerializer, ProfileSerializer, CommentSerializer, LikesSerializer, CategoriesSerializer
+from .models import Post, Profile, Comments, Likes, Categories
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from .permissions import IsAuthorOrReadOnly
 from rest_framework.viewsets import ModelViewSet
@@ -50,8 +49,10 @@ class PostViewSet(BasePermissionViewSet):
 
 
 
+
+
     @action(detail=True, url_path='like', methods=['POST'])
-    def like_post(self, request, pk=None):
+    def like_post(self, request):
         post = self.get_object()
         try:
             like = Likes.objects.get(post=post, user=request.user)
@@ -62,7 +63,7 @@ class PostViewSet(BasePermissionViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, url_path='unlike', methods=['DELETE'])
-    def unlike_post(self, request, pk=None):
+    def unlike_post(self, request):
         post = self.get_object()
         try:
             like = Likes.objects.get(post=post, user=request.user)
@@ -90,7 +91,7 @@ class CommentViewSet(BasePermissionViewSet):
     ordering = ['date_of_edit']
 
     @action(detail=True, url_path='like', methods=['POST'])
-    def like_comment(self, request, pk=None):
+    def like_comment(self, request):
         comment = self.get_object()
         try:
             like = Likes.objects.get(comment=comment, user=request.user)
@@ -122,7 +123,9 @@ class CommentViewSet(BasePermissionViewSet):
         serializer.save(user=self.request.user, post=post)
 
 
-
+class CategoryViewSet(ModelViewSet):
+    queryset = Categories.objects.all()
+    serializer_class = CategoriesSerializer
 
 
 

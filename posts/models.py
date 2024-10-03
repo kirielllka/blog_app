@@ -4,11 +4,18 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class Categories(models.Model):
+    category_name = models.fields.CharField(max_length=100, verbose_name='Name')
+
+    def __str__(self):
+        return f'Название категории:{self.category_name}'
+
 
 class Post(models.Model):
     title = models.fields.CharField(max_length=250, verbose_name='Title')
     content = models.TextField(verbose_name='Content')
     autor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Autor', related_name='posts')
+    categories = models.ManyToManyField(Categories,verbose_name='categories', related_name='posts')
     created_at = models.DateTimeField(auto_now_add=True,verbose_name='Create at')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Update at')
 
@@ -69,4 +76,8 @@ class Likes(models.Model):
         if self.post:
             return f'Пост:{self.post},Пользователь:{self.user}'
         return f'Пользователь:{self.user},Коммент:{self.comment}'
+
+
+
+
 
