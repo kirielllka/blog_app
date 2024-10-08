@@ -17,6 +17,36 @@ setuptools = "^74.1.2"
 djoser = "^2.2.3"
 django-filter = "^24.3"
 pillow = "^10.4.0"
+django-debug-toolbar = "^4.4.6"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+isort = "^5.13.2"
+mypy = "^1.11.2"
+flake8 = "^7.1.1"
+
+[tool.black]
+line-length = 90
+target-version = ['py310']
+extend-exclude = 'migrations'
+
+[tool.isort]
+profile = 'black'
+multi_line_output = 3
+skip_gitignore = true
+skip_glob = ['**/settings/*','**/migrations/*']
+src_paths = ['blog']
+
+[tool.mypy]
+mypy_path = './blog'
+follow_imports = 'silent'
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+
 
 [build-system]
 requires = ['poetry-core']

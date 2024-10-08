@@ -1,6 +1,5 @@
-from rest_framework import permissions
-
 from posts.models import Comments
+from rest_framework import permissions
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):

@@ -1,7 +1,14 @@
-from django.urls import path, include
-from .views import PostListView, PostViewSet, ProfileViewSet, CommentViewSet, CategoryViewSet
 from config.yasg import urlpatterns as doc_url
+from django.urls import include, path
 from rest_framework import routers
+
+from .views import (
+    CategoryViewSet,
+    CommentViewSet,
+    PostListView,
+    PostViewSet,
+    ProfileViewSet,
+)
 
 router = routers.DefaultRouter()
 router.register(r'posts', PostViewSet, basename='posts')
