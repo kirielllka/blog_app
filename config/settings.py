@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-19$430rvmmlz5u(laqx2a9k+x244c81=f9truhd1hu=w^!k5ni
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -47,29 +47,20 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework.authtoken',
     'django_filters',
-    'debug_toolbar',
-    'corsheaders',
     #local
     'posts.apps.PostsConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-CORS_ALLOWED_ORIGINS= (
-    'http://localhost:3000',
-    'http://localhost:8000',
-    'https://127.0.0.1:8000',
-    'http://192.168.0.142:3000'
-)
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -160,10 +151,3 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 
 }
-
-INTERNAL_IPS = [
-    '127.0.0.1',
-    'localhost',
-    '0.0.0.0',
-    '192.168.0.142'
-]
