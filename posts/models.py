@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+
 class Categories(models.Model):
     category_name = models.fields.CharField(max_length=100, verbose_name='Name')
 
@@ -27,7 +28,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='User', related_name='profiles')
     user_patronymic = models.fields.CharField(max_length=150, verbose_name='Patronymic', blank=True, null=True)
     user_birth_date = models.fields.DateField(blank=True, null=True)
-    image = models.ImageField(upload_to='posts/images', blank=True, null=True,verbose_name='Image')
+    image = models.fields.CharField(verbose_name='Image_url', blank=True, null=True)
 
 
     def full_name(self):
@@ -41,14 +42,16 @@ class Profile(models.Model):
             full.append(self.user_patronymic)
         return ' '.join(full)
 
-    def User_age(self, obj):
+
+    def user_age(self):
+        if not self.user_birth_date:
+            return None
         today = date.today()
-        age = today.year - obj.user_birth_date.year
-        if today.month < obj.user_birth_date.month or (
-                today.month == obj.user_birth_date.month and today.day < obj.user_birth_date.day):
+        age = today.year - self.user_birth_date.year
+        if today.month < self.user_birth_date.month or (
+                today.month == self.user_birth_date.month and today.day < self.user_birth_date.day):
             age -= 1
         return age
-
 
 
     def __str__(self):

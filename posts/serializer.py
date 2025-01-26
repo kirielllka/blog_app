@@ -61,15 +61,19 @@ class PostSerializer(serializers.ModelSerializer):
         instance.categories.set(categories_data)
         return instance
 
-
 class ProfileSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())#скрывает поле
-    full_name = Profile.full_name
-    age = Profile.User_age
-
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    full_name = serializers.SerializerMethodField()
+    user_age = serializers.SerializerMethodField()
     class Meta:
         model = Profile
-        fields = ('id','user','image','full_name','user_patronymic','age', 'user_birth_date')
+        fields = ('id','user','image','full_name','user_patronymic','user_age', 'user_birth_date')
+
+    def get_full_name(self, obj):
+        return obj.full_name()
+
+    def get_user_age(self, obj):
+        return obj.user_age()
 
 
 
